@@ -231,6 +231,12 @@ namespace PR_4
                 if (showpoint) drawpoint(); else clearpoint();    
                 
             }
+
+            // List<Point> point = new List<Point>();
+
+            // point.Add(new Point(1,2));
+
+            // point[0].drawpoint();
         
             Console.CursorVisible = false;
             
