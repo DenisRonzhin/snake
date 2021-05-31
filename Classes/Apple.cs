@@ -6,7 +6,7 @@ namespace SnakeGame
     public class Apple:IDisposable
         {
             public struct appPointer
-            {public int x,y;}
+            {public int x,y;} 
 
             public appPointer appPointer_ {get; set;} //свойство с координатами яблока
 
