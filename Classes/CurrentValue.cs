@@ -21,7 +21,7 @@ namespace SnakeGame
               Console.Write($"Apple: {appleCount}"); 
 
               Console.SetCursorPosition(SetupWindowSize.wight-30,1);
-              Console.Write($"Speed: {speedSnake/100}"); 
+              Console.Write($"Speed: {speedSnake}"); 
 
         }
 

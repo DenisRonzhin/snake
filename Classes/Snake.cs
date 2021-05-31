@@ -35,7 +35,7 @@ namespace SnakeGame
          
 
         char symb; 
-                public char symbol 
+        public char symbol 
         {
             get{return symb;} 
             set{symb = value;}
@@ -73,6 +73,23 @@ namespace SnakeGame
             speed_ = speed;
         }
         
+        public struct speedSnk //структура для хранения скорости змейки
+        { public int spd_index, spd_value;}
+
+        public speedSnk speedSnake = new speedSnk(); 
+        
+        public speedSnk[] listSpeed = new speedSnk[10]; //массив доступных скоростей 
+
+        int speed_; //текущая скорость
+
+        public int currentSpeed // свойство текущая скорость
+        {
+            get{return speed_;}
+
+            set{speed_ = value;}
+
+        }
+
         struct position  //структура для хранения координат точки
         {public int x, y;}    
 
@@ -80,15 +97,7 @@ namespace SnakeGame
        
         List<position> snk = new List<position>(); //Список для хранения змейки
                 
-        int speed_;
-
-        public int speed
-        {
-            get{return speed_;}
-
-            set{speed_ = value;}
-
-        }
+       
 
         int lenghtSnake; //По умолчанию длина змейки 5
         
@@ -111,7 +120,7 @@ namespace SnakeGame
         
         public enum pointer_ //указатель направления движения змейки
         {
-            left,right,up,down,stop,increaseSpeed,reduceSpeed
+            left,right,up,down,stop
         } 
 
         public pointer_ pointer {get;set;} 
@@ -158,6 +167,7 @@ namespace SnakeGame
             //зафиксируем координаты хвоста
             CurrentValue.tail_x = snk[snk.Count-1].x;
             CurrentValue.tail_y = snk[snk.Count-1].y;
+            CurrentValue.speedSnake = speed_;
      
             if (pointer == pointer_.left || pointer == pointer_.right || pointer == pointer_.down || pointer == pointer_.up) 
             {
@@ -210,7 +220,18 @@ namespace SnakeGame
         //Метод первоначальной инициализации змейки.
         public void init()
         {
-       
+
+            //заполним массив лоступных скоростей
+            int maxDelay = 200;
+            for (int i = 0; i < 10; i++)
+            {
+                speedSnake.spd_index = i+1;
+                speedSnake.spd_value = maxDelay;
+                maxDelay =  maxDelay - 20;
+                listSpeed[i] = speedSnake;
+            }     
+
+    
             for (int i = 0; i<lenghtSnake; i++)
             {
                 posit.x = x+i;
@@ -238,7 +259,7 @@ namespace SnakeGame
 
                 findApple = true;
 
-                Console.Beep();
+                //Console.Beep();
 
             }
 
@@ -247,39 +268,30 @@ namespace SnakeGame
             return findApple;
         }
 
-        public int setupSpeed()
+       
 
+        //Увеличить скорость
+        public void increeaseSpeed()
         {
-            switch(pointer)
-            {
-                case pointer_.increaseSpeed: 
-                {
+             if (speed_ < 9 ) speed_++; 
 
-                    if (speed_ < 300 ) speed_ = speed_+20;    
-
-                    break;
-                }   
-
-                case pointer_.reduceSpeed: 
-                {
-
-                    if (speed_>20) speed_ = speed_-20;
-
-                    break;
-                }   
-
-            }
-
-            return speed_;
         }
 
+        //Уменьшить скорость
+        public void reduceSpeed()
+        {
+            if (speed_>1) speed_--;
+
+        }
+
+      
 
         public bool checkGameOver()
         {
             bool gameOver = false;
             
             //столкновение со стенками по y
-            if (snk[0].x == 0 || snk[0].x == SetupWindowSize.wight)
+            if (snk[0].x == 1 || snk[0].x == SetupWindowSize.wight)
             {
                gameOver =  true;
             }
