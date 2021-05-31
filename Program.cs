@@ -23,7 +23,7 @@ namespace SnakeGame
                     CurrentValue.speedSnake = 1;    
 
 
-                    Snake mysnake = new Snake(30,10,3,'@',Snake.pointer_.stop);
+                    Snake mysnake = new Snake(30,10,3,'@',Snake.pointer_.stop,100);
                 
                     Wall mywall = new Wall('#');
 
@@ -56,7 +56,10 @@ namespace SnakeGame
                                 case ConsoleKey.DownArrow:  {if (mysnake.pointer != Snake.pointer_.up) {mysnake.pointer = Snake.pointer_.down;} break;}
                                 case ConsoleKey.LeftArrow:  {if (mysnake.pointer != Snake.pointer_.right) {mysnake.pointer = Snake.pointer_.left;} break;}
                                 case ConsoleKey.RightArrow: {if (mysnake.pointer != Snake.pointer_.left) {mysnake.pointer = Snake.pointer_.right;} break;}
+                                case ConsoleKey.PageUp:     {mysnake.pointer = Snake.pointer_.increaseSpeed; mysnake.setupSpeed(); break;}
+                                case ConsoleKey.PageDown:   {mysnake.pointer = Snake.pointer_.reduceSpeed; mysnake.setupSpeed(); break;}
                         
+
                             }    
 
                         }
@@ -64,7 +67,7 @@ namespace SnakeGame
                         mysnake.movesnake();
                         if (mysnake.checkApple()) {app.hideApple(); mysnake.addPoint(); app.createApple();}  
                         mysnake.showsnake(true);
-                        Thread.Sleep(100);
+                        Thread.Sleep(mysnake.setupSpeed());
 
                     }
 

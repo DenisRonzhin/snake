@@ -64,11 +64,13 @@ namespace SnakeGame
 
     public class Snake : Point 
     {
-        public Snake(int x, int y, int lengh, char smb, pointer_ pointt):base(x,y,smb)
+        public Snake(int x, int y, int lengh, char smb, pointer_ pointt, int speed):base(x,y,smb)
         {
             lenghtSnake = lengh;
 
             pointer = pointt;
+
+            speed_ = speed;
         }
         
         struct position  //структура для хранения координат точки
@@ -78,6 +80,16 @@ namespace SnakeGame
        
         List<position> snk = new List<position>(); //Список для хранения змейки
                 
+        int speed_;
+
+        public int speed
+        {
+            get{return speed_;}
+
+            set{speed_ = value;}
+
+        }
+
         int lenghtSnake; //По умолчанию длина змейки 5
         
         
@@ -95,11 +107,11 @@ namespace SnakeGame
             }
 
         } //Свойство длина змейки
-          
+
         
         public enum pointer_ //указатель направления движения змейки
         {
-            left,right,up,down,stop
+            left,right,up,down,stop,increaseSpeed,reduceSpeed
         } 
 
         public pointer_ pointer {get;set;} 
@@ -147,7 +159,7 @@ namespace SnakeGame
             CurrentValue.tail_x = snk[snk.Count-1].x;
             CurrentValue.tail_y = snk[snk.Count-1].y;
      
-            if (pointer != pointer_.stop) 
+            if (pointer == pointer_.left || pointer == pointer_.right || pointer == pointer_.down || pointer == pointer_.up) 
             {
                 //сдвигаем координаты точек змейки на один элемент, кроме головы
                 for (int l=snk.Count-1; l>0; l--)
@@ -234,6 +246,33 @@ namespace SnakeGame
 
             return findApple;
         }
+
+        public int setupSpeed()
+
+        {
+            switch(pointer)
+            {
+                case pointer_.increaseSpeed: 
+                {
+
+                    if (speed_ < 300 ) speed_ = speed_+20;    
+
+                    break;
+                }   
+
+                case pointer_.reduceSpeed: 
+                {
+
+                    if (speed_>20) speed_ = speed_-20;
+
+                    break;
+                }   
+
+            }
+
+            return speed_;
+        }
+
 
         public bool checkGameOver()
         {
