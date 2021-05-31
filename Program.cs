@@ -446,7 +446,7 @@ namespace PR_4
            Console.SetCursorPosition(appPoint.x,appPoint.y);
            Console.Write(' ');    
     
-  
+        //хуй
         }
 
         public void Dispose()
