@@ -1,6 +1,6 @@
 using System;
 
-namespace PR_4
+namespace SnakeGame
 {
     
     public class Apple:IDisposable
