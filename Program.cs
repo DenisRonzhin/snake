@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using System.Media;
+using System.Threading.Tasks;
 
 namespace SnakeGame
 {
@@ -11,6 +11,8 @@ namespace SnakeGame
         {
 
 
+            ConsoleKeyInfo ConsoleKeyInf = new ConsoleKeyInfo();    
+         
             //Основной цикл программы
             while (true)
                 {
@@ -38,19 +40,31 @@ namespace SnakeGame
                     app.createApple();
                     app.showApple();
 
-                    while (mysnake.checkGameOver() == false) 
+                    Task delayTimer = Task.CompletedTask;
+                   
+
+                  
+                    while (true) 
                     {
 
-                        mysnake.showsnake(false);
+
 
                         app.showApple();
         
                         if (Console.KeyAvailable)
                         {
-                        
-                            ConsoleKeyInfo ConsoleKeyInf = Console.ReadKey();
+                      
+                           ConsoleKeyInf = Console.ReadKey();
 
+
+                        }
+
+         
+                        if (!delayTimer.IsCompleted) continue;
+
+        
                             switch(ConsoleKeyInf.Key)
+        
                             { 
                                 case ConsoleKey.UpArrow:    {if (mysnake.pointer != Snake.pointer_.down) {mysnake.pointer = Snake.pointer_.up;} break;}
                                 case ConsoleKey.DownArrow:  {if (mysnake.pointer != Snake.pointer_.up) {mysnake.pointer = Snake.pointer_.down;} break;}
@@ -62,13 +76,18 @@ namespace SnakeGame
 
                             }    
 
-                        }
 
+
+                        delayTimer  = delayGame(mysnake.listSpeed[mysnake.currentSpeed].spd_value);                        
+
+                        mysnake.showsnake(false); 
                         mysnake.movesnake();
-                        if (mysnake.checkApple()) {app.hideApple(); mysnake.addPoint(); app.createApple();}  
                         mysnake.showsnake(true);
-                        
-                        Thread.Sleep(mysnake.listSpeed[mysnake.currentSpeed].spd_value);
+                        if (mysnake.checkGameOver()) break;
+                        if (mysnake.checkApple()) {app.hideApple(); mysnake.addPoint(); app.createApple();}  
+
+                        //Thread.Sleep(mysnake.listSpeed[mysnake.currentSpeed].spd_value);
+
 
                     }
 
@@ -78,6 +97,13 @@ namespace SnakeGame
 
                     
                 }
+        }
+
+         static async Task delayGame(int spd_value)
+        {
+            await Task.Delay(spd_value);
+
+
         }
     }
 }
