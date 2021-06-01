@@ -12,7 +12,10 @@ namespace SnakeGame
 
 
             ConsoleKeyInfo ConsoleKeyInf = new ConsoleKeyInfo();    
-         
+
+            ConsoleKeyInfo LastKeyInf = new ConsoleKeyInfo();    
+            
+
             //Основной цикл программы
             while (true)
                 {
@@ -41,13 +44,9 @@ namespace SnakeGame
                     app.showApple();
 
                     Task delayTimer = Task.CompletedTask;
-                   
-
-                  
+       
                     while (true) 
                     {
-
-
 
                         app.showApple();
         
@@ -56,27 +55,71 @@ namespace SnakeGame
                       
                            ConsoleKeyInf = Console.ReadKey();
 
+                            switch(ConsoleKeyInf.Key)
+    
+                            { 
+                                case ConsoleKey.UpArrow:    
+                                        {
+                                            if (LastKeyInf.Key == ConsoleKeyInf.Key && mysnake.pointer == Snake.pointer_.up) {mysnake.increeaseSpeed();}
+                                            if (mysnake.pointer == Snake.pointer_.down) {mysnake.reduceSpeed();}
+                                            break;
+                                        }
+                                case ConsoleKey.DownArrow:
+                                        {
+                                            if (LastKeyInf.Key == ConsoleKeyInf.Key && mysnake.pointer == Snake.pointer_.down) {mysnake.increeaseSpeed();}
+                                            if (mysnake.pointer == Snake.pointer_.up) {mysnake.reduceSpeed();}
+                                            break;
+                                        }
+                                case ConsoleKey.LeftArrow:
+                                        {
+                                            if (LastKeyInf.Key == ConsoleKeyInf.Key && mysnake.pointer == Snake.pointer_.left) {mysnake.increeaseSpeed();}
+                                            if (mysnake.pointer == Snake.pointer_.right) {mysnake.reduceSpeed();}
+                                            break;
+                                        }    
+                                case ConsoleKey.RightArrow: 
+                                        {
+                                            if (LastKeyInf.Key == ConsoleKeyInf.Key && mysnake.pointer == Snake.pointer_.right) {mysnake.increeaseSpeed();}
+                                            if (mysnake.pointer == Snake.pointer_.left) {mysnake.reduceSpeed();}
+                                            break;
+                                        }
+    
+                            }    
+
+                            LastKeyInf = ConsoleKeyInf; 
 
                         }
 
          
                         if (!delayTimer.IsCompleted) continue;
 
-        
-                            switch(ConsoleKeyInf.Key)
-        
-                            { 
-                                case ConsoleKey.UpArrow:    {if (mysnake.pointer != Snake.pointer_.down) {mysnake.pointer = Snake.pointer_.up;} break;}
-                                case ConsoleKey.DownArrow:  {if (mysnake.pointer != Snake.pointer_.up) {mysnake.pointer = Snake.pointer_.down;} break;}
-                                case ConsoleKey.LeftArrow:  {if (mysnake.pointer != Snake.pointer_.right) {mysnake.pointer = Snake.pointer_.left;} break;}
-                                case ConsoleKey.RightArrow: {if (mysnake.pointer != Snake.pointer_.left) {mysnake.pointer = Snake.pointer_.right;} break;}
-                                case ConsoleKey.PageUp:     {mysnake.increeaseSpeed(); break;}
-                                case ConsoleKey.PageDown:   {mysnake.reduceSpeed(); break;}
+    
+                        switch(ConsoleKeyInf.Key)
+    
+                        { 
+                            case ConsoleKey.UpArrow:    
+                                    {
+                                        if (mysnake.pointer != Snake.pointer_.down) {mysnake.pointer = Snake.pointer_.up;} 
+                                        break;
+                                    }
+                            case ConsoleKey.DownArrow:
+                                    {
+                                        if (mysnake.pointer != Snake.pointer_.up) {mysnake.pointer = Snake.pointer_.down;} 
+                                        break;
+                                    }
+                            case ConsoleKey.LeftArrow:
+                                    {
+                                        if (mysnake.pointer != Snake.pointer_.right) {mysnake.pointer = Snake.pointer_.left;} 
+                                        break;
+                                    }
+                            case ConsoleKey.RightArrow: 
+                                    {
+                                        if (mysnake.pointer != Snake.pointer_.left) {mysnake.pointer = Snake.pointer_.right;} 
+                                        break;
+                                    }
+
                         
 
-                            }    
-
-
+                        }    
 
                         delayTimer  = delayGame(mysnake.listSpeed[mysnake.currentSpeed].spd_value);                        
 
@@ -88,7 +131,7 @@ namespace SnakeGame
 
                         //Thread.Sleep(mysnake.listSpeed[mysnake.currentSpeed].spd_value);
 
-
+                 
                     }
 
                     Console.ReadKey();
