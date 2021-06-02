@@ -10,15 +10,21 @@ namespace SnakeGame
         static void Main(string[] args)
         {
 
-
-            ConsoleKeyInfo ConsoleKeyInf = new ConsoleKeyInfo();    
-
-            ConsoleKeyInfo LastKeyInf = new ConsoleKeyInfo();    
-            
-
             //Основной цикл программы
             while (true)
                 {
+
+                    //Фиксируем время нажатия на клавишу    
+                    long keyPressTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+                    //Фиксируем текущее время                       
+                    long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+
+
+                    ConsoleKeyInfo ConsoleKeyInf = new ConsoleKeyInfo();    
+                    ConsoleKeyInfo LastKeyInf = new ConsoleKeyInfo();    
+    
                     //Определим размеры игрового поля
                     SetupWindowSize.height = 30;
                     SetupWindowSize.wight = 100;
@@ -53,44 +59,55 @@ namespace SnakeGame
                         if (Console.KeyAvailable)
                         {
                       
-                           ConsoleKeyInf = Console.ReadKey();
-
+                            ConsoleKeyInf = Console.ReadKey();
+                 
+                            keyPressTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                 
                             switch(ConsoleKeyInf.Key)
     
                             { 
                                 case ConsoleKey.UpArrow:    
                                         {
-                                            if (LastKeyInf.Key == ConsoleKeyInf.Key && mysnake.pointer == Snake.pointer_.up) {mysnake.increeaseSpeed();}
-                                            if (mysnake.pointer == Snake.pointer_.down) {mysnake.reduceSpeed();}
+                                            if (LastKeyInf.Key == ConsoleKeyInf.Key && mysnake.pointer == Snake.pointer_.up) {mysnake.increeaseSpeed(); }
+                                            //if (mysnake.pointer == Snake.pointer_.down) {mysnake.reduceSpeed();}
                                             break;
                                         }
                                 case ConsoleKey.DownArrow:
                                         {
                                             if (LastKeyInf.Key == ConsoleKeyInf.Key && mysnake.pointer == Snake.pointer_.down) {mysnake.increeaseSpeed();}
-                                            if (mysnake.pointer == Snake.pointer_.up) {mysnake.reduceSpeed();}
+                                            //if (mysnake.pointer == Snake.pointer_.up) {mysnake.reduceSpeed();}
                                             break;
                                         }
                                 case ConsoleKey.LeftArrow:
-                                        {
+                                        {    
                                             if (LastKeyInf.Key == ConsoleKeyInf.Key && mysnake.pointer == Snake.pointer_.left) {mysnake.increeaseSpeed();}
-                                            if (mysnake.pointer == Snake.pointer_.right) {mysnake.reduceSpeed();}
+                                            //if (mysnake.pointer == Snake.pointer_.right) {mysnake.reduceSpeed();}
                                             break;
                                         }    
                                 case ConsoleKey.RightArrow: 
                                         {
+                                             
                                             if (LastKeyInf.Key == ConsoleKeyInf.Key && mysnake.pointer == Snake.pointer_.right) {mysnake.increeaseSpeed();}
-                                            if (mysnake.pointer == Snake.pointer_.left) {mysnake.reduceSpeed();}
+                                            //if (mysnake.pointer == Snake.pointer_.left) {mysnake.reduceSpeed();}
                                             break;
                                         }
     
-                            }    
+                              
+                                            
+                            } 
 
                             LastKeyInf = ConsoleKeyInf; 
 
-                        }
+                        }; 
 
-         
-                        if (!delayTimer.IsCompleted) continue;
+                         
+                        currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+                        //Если текущее время отличается от времени нажатия на кнопку более чем на 70 мсек, значит кнопку отпустили
+
+                        if (currentTime - keyPressTime >  70) mysnake.reduceSpeed();
+                    
+                        if (!delayTimer.IsCompleted) continue; // если таймер не сработал, продолжаем цикл
 
     
                         switch(ConsoleKeyInf.Key)
@@ -121,8 +138,10 @@ namespace SnakeGame
 
                         }    
 
-                        delayTimer  = delayGame(mysnake.listSpeed[mysnake.currentSpeed].spd_value);                        
+                        
 
+                        delayTimer  = delayGame(mysnake.listSpeed[mysnake.currentSpeed].spd_value);                        
+                       
                         mysnake.showsnake(false); 
                         mysnake.movesnake();
                         mysnake.showsnake(true);
